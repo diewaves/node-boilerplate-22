@@ -1,13 +1,11 @@
-const path = require('path')
+import path from "path";
+import { merge } from "webpack-merge";
+import config from "./webpack.config.js";
 
-const { merge } = require('webpack-merge')
-
-const config = require('./webpack.config')
-
-module.exports = merge(config, {
-  mode: 'production', // Modo producción
+export default merge(config, {
+  mode: "production", // Modo producción
 
   output: {
-    path: path.resolve(__dirname, 'public') // En esta carpeta va a alojar los archivos compilados mientras desarrollamos
-  }
-})
+    path: path.resolve(__dirname, "public"), // En esta carpeta va a alojar los archivos compilados mientras desarrollamos
+  },
+});

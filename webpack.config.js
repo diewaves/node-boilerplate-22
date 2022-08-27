@@ -1,34 +1,37 @@
-const path = require('path') // Simplifica la busqueda de rutas
-const webpack = require('webpack')
+import path from "path";
+import webpack from "webpack";
+import { fileURLToPath } from "url";
 
-const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin') // Copia los archivos al build
-const MiniCssExtractPlugin = require('mini-css-extract-plugin') // Minifica y optimiza el css
-const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin') // Optimiza imagenes
-const TerserPlugin = require('terser-webpack-plugin')
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin"; // Copia los archivos al build
+import MiniCssExtractPlugin from "mini-css-extract-plugin"; // Minifica y optimiza el css
+import ImageMinimizerPlugin from "image-minimizer-webpack-plugin"; // Optimiza imagenes
+import TerserPlugin from "terser-webpack-plugin";
 
-const IS_DEVELOPMENT = process.env.NODE_ENV === 'dev' // Indica que usaremos Node en el entorno de desarrollo
+const IS_DEVELOPMENT = process.env.NODE_ENV === "dev"; // In dica que usaremos Node en el entorno de desarrollo
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const dirApp = path.join(__dirname, 'app') // Define una dirección para la carpeta app
-const dirAssets = path.join(__dirname, 'assets')
-const dirShared = path.join(__dirname, 'shared')
-const dirStyles = path.join(__dirname, 'styles')
-const dirNode = 'node_modules'
+const dirApp = path.join(__dirname, "app"); // Define una dirección para la carpeta app
+const dirAssets = path.join(__dirname, "assets");
+const dirShared = path.join(__dirname, "shared");
+const dirStyles = path.join(__dirname, "styles");
+const dirNode = "node_modules";
 
-module.exports = {
+export default {
   entry: [
-    path.join(dirApp, 'index.js'), // Añadimos el index principal de js
-    path.join(dirStyles, 'index.scss') // Añadimos el index principal de js
+    path.join(dirApp, "index.js"), // Añadimos el index principal de js
+    path.join(dirStyles, "index.scss"), // Añadimos el index principal de js
   ],
 
   resolve: {
-    modules: [dirApp, dirAssets, dirShared, dirStyles, dirNode] // Esto ayuda aque en tus archivos no tengas que escribir la ruta completa y sus niveles
+    modules: [dirApp, dirAssets, dirShared, dirStyles, dirNode], // Esto ayuda aque en tus archivos no tengas que escribir la ruta completa y sus niveles
   },
 
   plugins: [
     new webpack.DefinePlugin({
       // Nos ayuda a chequear si estamos en entorno desarrollo, viene bien para lanzar mensajes solo en ese entorno
-      IS_DEVELOPMENT
+      IS_DEVELOPMENT,
     }),
 
     new CleanWebpackPlugin(),
@@ -42,15 +45,15 @@ module.exports = {
       // Copia los archivos al directorio del build o public, para que sean facilmente accesibles y no haya que acordarse de en que directorio está
       patterns: [
         {
-          from: './shared',
-          to: ''
-        }
-      ]
+          from: "./shared",
+          to: "",
+        },
+      ],
     }),
     new MiniCssExtractPlugin({
       // Optimizado de css
-      filename: '[name].css',
-      chunkFilename: '[id].css'
+      filename: "[name].css",
+      chunkFilename: "[id].css",
     }),
     new ImageMinimizerPlugin({
       // Optimizado de imágenes
@@ -58,13 +61,13 @@ module.exports = {
         implementation: ImageMinimizerPlugin.imageminMinify,
         options: {
           plugins: [
-            ['gifsicle', { interlaced: true }],
-            ['jpegtran', { progressive: true }],
-            ['optipng', { optimizationLevel: 7 }]
-          ]
-        }
-      }
-    })
+            ["gifsicle", { interlaced: true }],
+            ["jpegtran", { progressive: true }],
+            ["optipng", { optimizationLevel: 7 }],
+          ],
+        },
+      },
+    }),
   ],
 
   module: {
@@ -72,13 +75,13 @@ module.exports = {
     rules: [
       {
         test: /\.pug$/,
-        use: ['pug-loader'] // Preprocesador para lenguaje pug, que nos permite escribir html de forma muy cómoda
+        use: ["pug-loader"], // Preprocesador para lenguaje pug, que nos permite escribir html de forma muy cómoda
       },
       {
         test: /\.js$/,
         use: {
-          loader: 'babel-loader' // Usamos babel para escribir javascript moderno y que lo compile para que lo entiendan todos los navegadores
-        }
+          loader: "babel-loader", // Usamos babel para escribir javascript moderno y que lo compile para que lo entiendan todos los navegadores
+        },
       },
       {
         test: /\.(sa|sc|c)ss$/, // Busca archivos sass, scss o css
@@ -86,61 +89,61 @@ module.exports = {
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              publicPath: ''
-            }
+              publicPath: "",
+            },
           },
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
-              sourceMap: false
-            }
+              sourceMap: false,
+            },
           },
           {
-            loader: 'postcss-loader', // Post CSS es importante para que él solo te añada los prefijos especiales para reglas CSS de algunos navegadores como -webkit- o -moz-
+            loader: "postcss-loader", // Post CSS es importante para que él solo te añada los prefijos especiales para reglas CSS de algunos navegadores como -webkit- o -moz-
             options: {
-              sourceMap: false
-            }
+              sourceMap: false,
+            },
           },
           {
-            loader: 'sass-loader', // Preprocesador para utilizar scss
+            loader: "sass-loader", // Preprocesador para utilizar scss
             options: {
-              sourceMap: false
-            }
-          }
-        ]
+              sourceMap: false,
+            },
+          },
+        ],
       },
       {
         test: /\.(jpe?g|png|gif|svg|woff2?|fnt|webp)$/, // Encuentra los archivos y los carga en el build, asi nunca te preocuparás por cambios de url
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          name (file) {
-            return '[hash].[ext]'
-          }
-        }
+          name(file) {
+            return "[hash].[ext]";
+          },
+        },
       },
       {
         test: /\.(jpe?g|png|gif|svg|webp)$/i, // Busca imagenes y las optimiza
         use: [
           {
-            loader: ImageMinimizerPlugin.loader
-          }
-        ]
+            loader: ImageMinimizerPlugin.loader,
+          },
+        ],
       },
       {
         test: /\.(glsl|frag|vert)$/, // Utilidad para lenguaje shader de webGL y dividir sus funciones
-        loader: 'raw-loader',
-        exclude: /node_modules/
+        loader: "raw-loader",
+        exclude: /node_modules/,
       },
       {
         test: /\.(glsl|frag|vert)$/,
-        loader: 'glslify-loader',
-        exclude: /node_modules/
-      }
-    ]
+        loader: "glslify-loader",
+        exclude: /node_modules/,
+      },
+    ],
   },
 
   optimization: {
     minimize: true,
-    minimizer: [new TerserPlugin()] // Este plugin minifica y mejora el código para producción
-  }
-}
+    minimizer: [new TerserPlugin()], // Este plugin minifica y mejora el código para producción
+  },
+};

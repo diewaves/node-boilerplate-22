@@ -1,18 +1,17 @@
 // Integración con Prismic
-
 import path from "path";
 import express from "express";
 import { fileURLToPath } from "url";
 import * as prismicH from "@prismicio/helpers";
 import { client } from "./config/prismicConfig.js";
 
-require("dotenv").config();
+import "dotenv/config";
 
 const app = express();
 const port = 3000;
 
 app.set("view engine", "pug"); // Utilizamos PUG como motor de renderizado de vistas
-app.set("views", path.join(__dirname, "views")); // Encuentra los archivos pug con las vistas
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.use(express.static(path.join(__dirname, "views")));
 
 // Middleware son funciones que permiten acceder al endpoint y obtener la información de un objeto

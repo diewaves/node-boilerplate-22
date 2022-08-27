@@ -1,19 +1,18 @@
-const { merge } = require('webpack-merge') // Copia y une las declaraciones del config en el resto de configs para no repetirlas
-const path = require('path')
+import path from "path";
+import { merge } from "webpack-merge";
+import config from "./webpack.config.js";
 
-const config = require('./webpack.config') // Requiere configuración de webpack
-
-module.exports = merge(config, {
+export default merge(config, {
   // Exportamos los modulos que nos interesan en objetos
-  mode: 'development', // Modo desarrollo activado
-  devtool: 'inline-source-map',
+  mode: "development", // Modo desarrollo activado
+  devtool: "inline-source-map",
   devServer: {
     devMiddleware: {
-      writeToDisk: true
-    }
+      writeToDisk: true,
+    },
   },
 
   output: {
-    path: path.resolve(__dirname, 'public') // En esta carpeta va a alojar los archivos compilados mientras desarrollamos
-  }
-})
+    path: path.resolve(__dirname, "public"), // En esta carpeta va a alojar los archivos compilados mientras desarrollamos
+  },
+});
