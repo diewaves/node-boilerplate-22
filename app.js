@@ -22,17 +22,27 @@ app.use((req, res, next) => {
 });
 
 app.get("/", async (req, res) => {
-  // Renderizado normal
-  const document = await client.getSingle("home");
-  res.render("pages/home", { document });
+  // Obtención de datos de prismic para cada vista
+  const document = await client.get({
+    predicates: prismic.predicate.any("document.type", ["home", "meta"]),})
+  const { results } = document // Creamos un constructor. Desestructuración de javascript
+  const [meta, home] = results // Deconstruimos el array en un objeto
+  res.render('pages/home', { // Renderizamos cada respuesta
+    meta,
+    home
+  })
 });
 
 app.get("/about", async (req, res) => {
   // Obtención de datos de prismic para cada vista
   const document = await client.get({
     predicates: prismic.predicate.any("document.type", ["about", "meta"]),})
-  console.log(document)
-  res.render("pages/about", { document });
+  const { results } = document // Creamos un constructor. Desestructuración de javascript
+  const [meta, about] = results // Deconstruimos el array en un objeto
+  res.render('pages/about', { // Renderizamos cada respuesta
+    meta,
+    about
+  })
 });
 
 app.listen(port, () => {
