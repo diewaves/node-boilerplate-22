@@ -35,10 +35,13 @@ app.get("/", async (req, res) => {
 
 app.get("/about", async (req, res) => {
   // Obtención de datos de prismic para cada vista
-  const document = await client.get({
+  const document = await client.get({ // Uno de los valores de documnet es results
     predicates: prismic.predicate.any("document.type", ["about", "meta"]),})
-  const { results } = document // Creamos un constructor. Desestructuración de javascript
-  const [meta, about] = results // Deconstruimos el array en un objeto
+  const { results } = document // Creamos un constructor para sacar el array con el objeto que queremos. Desestructuración de javascript
+  const [meta, about] = results // Deconstruimos el objeto en un array y los nombramos por el orden que necesitamos
+  // console.log(document)
+  // console.log(results)
+  // console.log(meta)
   res.render('pages/about', { // Renderizamos cada respuesta
     meta,
     about
