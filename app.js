@@ -32,7 +32,7 @@ app.get("/about", async (req, res) => {
   const document = await client.get({
     predicates: prismic.predicate.any("document.type", ["about", "meta"]),})
   console.log(document)
-  res.render("pages/about", {document});
+  res.render("pages/about", { document });
 });
 
 app.listen(port, () => {
