@@ -30,29 +30,10 @@ app.get("/", async (req, res) => {
 app.get("/about", async (req, res) => {
   // Obtención de datos de prismic para cada vista
   const document = await client.get({
-    predicates: prismic.predicate.any("document.type", ["about", "meta"]),
-  });
+    predicates: prismic.predicate.any("document.type", ["about", "meta"]),})
   console.log(document)
-  res.render("pages/about", { document });
+  res.render("pages/about", {document});
 });
-
-
-// app.get('/about', async (req, res) => { // Obtención de datos de prismic para cada vista
-//   initApi(req).then(api => {
-//     api.query(
-//       // Prismic.Predicates.at('document.type', 'about'), // Si quisieramos pasar un solo documento
-//       Prismic.Predicates.any('document.type', ['meta', 'about'])).then(response => { // Este es el objeto de respuesta. Se renderiza la vista aquí
-//       const { results } = response // Creamos un constructor. Desestructuración de javascript
-//       const [meta, about] = results // Deconstruimos el array en un objeto
-//       // console.log(results) // Esto devuelve un array con el objeto, sería lo mismo que response.results, si logeamos ahora about nos saca el objeto libre
-//       res.render('pages/about', {
-//         // document: response.results[0]
-//         meta,
-//         about // Al haber hecho la desestructuración, podemos colocar aqui el objeto directo
-//       })
-//     })
-//   })
-// })
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
