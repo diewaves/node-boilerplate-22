@@ -6,8 +6,6 @@ import * as prismic from '@prismicio/client'
 import * as prismicH from "@prismicio/helpers";
 import { client } from "./config/prismicConfig.js";
 
-import "dotenv/config";
-
 const app = express();
 const port = 3000;
 
@@ -37,6 +35,7 @@ app.get("/about", async (req, res) => {
   console.log(document)
   res.render("pages/about", { document });
 });
+
 
 // app.get('/about', async (req, res) => { // Obtención de datos de prismic para cada vista
 //   initApi(req).then(api => {

@@ -2,6 +2,7 @@
 // Con type module no se pueden hacer require, todo es import
 import fetch from "node-fetch";
 import * as prismic from "@prismicio/client";
+import "dotenv/config";
 
 const repoName = process.env.PRISMIC_ENDPOINT; // Tu repositorio o endpoint
 const accessToken = process.env.PRISMIC_ACCESS_TOKEN; // Token del repositorio
