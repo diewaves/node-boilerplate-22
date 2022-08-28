@@ -1,6 +1,9 @@
 import path from "path";
 import { merge } from "webpack-merge";
+import { fileURLToPath } from "url";
 import config from "./webpack.config.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default merge(config, {
   // Exportamos los modulos que nos interesan en objetos

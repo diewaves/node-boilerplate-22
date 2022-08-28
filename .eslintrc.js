@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // Sirve para ser consistente y tener una sintaxis correcta, entre otras cosas quita los ; Ten cuidado si tienes instalado otros formatters como Prettier
   root: true,
   extends: ['standard'],

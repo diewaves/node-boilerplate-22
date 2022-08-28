@@ -2,6 +2,7 @@
 import path from "path";
 import express from "express";
 import { fileURLToPath } from "url";
+import * as prismic from '@prismicio/client'
 import * as prismicH from "@prismicio/helpers";
 import { client } from "./config/prismicConfig.js";
 
@@ -24,26 +25,33 @@ app.use((req, res, next) => {
 
 app.get("/", async (req, res) => {
   // Renderizado normal
-  const document = await client.getFirst();
-  res.render("page", { document });
+  const document = await client.getSingle("home");
+  res.render("pages/home", { document });
 });
 
 app.get("/about", async (req, res) => {
   // Obtención de datos de prismic para cada vista
   const document = await client.get({
-    predicates: prismic.predicates.any("document.type", ["about", "meta"]),
+    predicates: prismic.predicate.any("document.type", ["about", "meta"]),
   });
-  res.render("page", { document });
+  console.log(document)
+  res.render("pages/about", { document });
 });
 
-// app.get('/', async (req, res) => {
-//   res.render('base', { // De esta forma podemos renderizar un archivo de pug y pasarle datos en un objeto
-//     meta: {
-//       data: {
-//         title: '',
-//         description: ''
-//       }
-//     }
+// app.get('/about', async (req, res) => { // Obtención de datos de prismic para cada vista
+//   initApi(req).then(api => {
+//     api.query(
+//       // Prismic.Predicates.at('document.type', 'about'), // Si quisieramos pasar un solo documento
+//       Prismic.Predicates.any('document.type', ['meta', 'about'])).then(response => { // Este es el objeto de respuesta. Se renderiza la vista aquí
+//       const { results } = response // Creamos un constructor. Desestructuración de javascript
+//       const [meta, about] = results // Deconstruimos el array en un objeto
+//       // console.log(results) // Esto devuelve un array con el objeto, sería lo mismo que response.results, si logeamos ahora about nos saca el objeto libre
+//       res.render('pages/about', {
+//         // document: response.results[0]
+//         meta,
+//         about // Al haber hecho la desestructuración, podemos colocar aqui el objeto directo
+//       })
+//     })
 //   })
 // })
 
